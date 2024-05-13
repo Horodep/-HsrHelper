@@ -1,0 +1,248 @@
+﻿<Window x:Class="HsrHelper.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HsrHelper"
+        mc:Ignorable="d"
+        Title="Honkai Star Rail Build Helper" Height="1000" Width="1600" Icon="/favicon.ico">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="26"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TabControl Grid.Column="1" Grid.RowSpan="1">
+            <TabItem Header="Relics">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="110"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <ListView Name="relicListUi" Grid.Row="1">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="40" Header="Tier" DisplayMemberBinding="{Binding tier}"/>
+                                <GridViewColumn Width="250" Header="Relic Set 1" DisplayMemberBinding="{Binding relic.name}"/>
+                                <GridViewColumn Width="250" Header="Relic Set 2" DisplayMemberBinding="{Binding relic_2.name}"/>
+                                <GridViewColumn Width="Auto" Header="Value" DisplayMemberBinding="{Binding value}"/>
+                                <GridViewColumn Width="Auto" Header="Comments" DisplayMemberBinding="{Binding comment}"/>
+                                <GridViewColumn Width="600" Header="Notes" DisplayMemberBinding="{Binding notes}"/>
+                            </GridView>
+                        </ListView.View>
+
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding flag}" Value="true">
+                                        <Setter Property="Background" Value="LightGreen" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+
+                                <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+                                <Setter Property="ToolTipService.ShowDuration" Value="100000" />
+                                <Setter Property="ToolTip">
+                                    <Setter.Value>
+                                        <Grid>
+                                            <StackPanel Orientation="Vertical">
+                                                <StackPanel.Resources>
+                                                    <local:NullVisibilityConverter x:Key="NullToVisibilityConverter" />
+                                                </StackPanel.Resources>
+
+                                                <Grid>
+                                                    <Image HorizontalAlignment="Left" Height="100" Width="100" Margin="5,5,0,0" VerticalAlignment="Top" Source="{Binding relic.image}" />
+                                                    <TextBlock HorizontalAlignment="Left" Margin="110, 5,0,0" TextWrapping="Wrap" Text="{Binding relic.name}" VerticalAlignment="Top" Width="400" FontSize="14" FontWeight="Bold"/>
+                                                    <TextBlock HorizontalAlignment="Left" Margin="110,25,0,0" TextWrapping="Wrap" Text="Bonus 2:" VerticalAlignment="Top" FontSize="14"/>
+                                                    <TextBlock HorizontalAlignment="Left" Margin="110,45,0,0" TextWrapping="Wrap" Text="Bonus 4:" VerticalAlignment="Top" FontSize="14"/>
+                                                    <TextBlock HorizontalAlignment="Left" Margin="165,25,0,0" TextWrapping="Wrap" Text="{Binding relic.bonus2}" VerticalAlignment="Top" Width="400" FontSize="14"/>
+                                                    <TextBlock HorizontalAlignment="Left" Margin="165,45,0,0" TextWrapping="Wrap" Text="{Binding relic.bonus4}" VerticalAlignment="Top" Width="400" FontSize="14"/>
+                                                </Grid>
+                                                <Grid Visibility="{Binding relic_2, Converter={StaticResource NullToVisibilityConverter}}">
+                                                    <Image HorizontalAlignment="Left" Height="100" Width="100" Margin="5,15,0,0" VerticalAlignment="Top" Source="{Binding relic_2.image}" />
+                                                    <TextBlock HorizontalAlignment="Left" Margin="110,15,0,0" TextWrapping="Wrap" Text="{Binding relic_2.name}" VerticalAlignment="Top" Width="400" FontSize="14" FontWeight="Bold"/>
+                                                    <TextBlock HorizontalAlignment="Left" Margin="110,35,0,0" TextWrapping="Wrap" Text="Bonus 2:" VerticalAlignment="Top" FontSize="14"/>
+                                                    <TextBlock HorizontalAlignment="Left" Margin="110,55,0,0" TextWrapping="Wrap" Text="Bonus 4:" VerticalAlignment="Top" FontSize="14"/>
+                                                    <TextBlock HorizontalAlignment="Left" Margin="165,35,0,0" TextWrapping="Wrap" Text="{Binding relic_2.bonus2}" VerticalAlignment="Top" Width="400" FontSize="14"/>
+                                                    <TextBlock HorizontalAlignment="Left" Margin="165,55,0,0" TextWrapping="Wrap" Text="{Binding relic_2.bonus4}" VerticalAlignment="Top" Width="400" FontSize="14"/>
+                                                </Grid>
+                                            </StackPanel>
+
+
+                                        </Grid>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate>
+                                                    <Expander IsExpanded="True" Margin="5,0,0,0">
+                                                        <Expander.Header>
+                                                            <StackPanel Orientation="Vertical" Margin="10,0,0,4">
+                                                                <StackPanel Orientation="Horizontal" >
+                                                                    <TextBlock Text="{Binding Name.name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
+                                                                </StackPanel>
+                                                                <StackPanel Orientation="Horizontal" >
+                                                                    <TextBlock FontSize="15" VerticalAlignment="Bottom" Foreground="#555" FontWeight="Bold" Text="BODY: " />
+                                                                    <TextBlock FontSize="15" VerticalAlignment="Bottom" Foreground="#555" Text="{Binding Name.body}" />
+                                                                    <TextBlock FontSize="15" VerticalAlignment="Bottom" Foreground="#555" Text=";" />
+                                                                    <TextBlock FontSize="15" VerticalAlignment="Bottom" Foreground="#555" FontWeight="Bold" Text=" FEET: " />
+                                                                    <TextBlock FontSize="15" VerticalAlignment="Bottom" Foreground="#555" Text="{Binding Name.feet}" />
+                                                                </StackPanel>
+                                                            </StackPanel>
+                                                        </Expander.Header>
+                                                        <ItemsPresenter />
+                                                    </Expander>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                    </ListView>
+
+                    <ComboBox Name="RelicListTitles" HorizontalAlignment="Left" Margin="110,10,0,0" VerticalAlignment="Top" Width="459" Height="32" SelectionChanged="RefreshRelicTable" DisplayMemberPath="name" FontSize="18" />
+                    <CheckBox Name="RelicListMode" Content="Show alternatives" HorizontalAlignment="Left" Margin="585,20,0,0" VerticalAlignment="Top" Checked="RelicListMode_Checked" Unchecked="RelicListMode_Checked" />
+
+                    <TextBlock HorizontalAlignment="Left" Margin="165,49,0,0" TextWrapping="Wrap" Text="{Binding ElementName=RelicListTitles, Path=SelectedValue.bonus2}" VerticalAlignment="Top" Width="1009" FontSize="14"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="165,69,0,0" TextWrapping="Wrap" Text="{Binding ElementName=RelicListTitles, Path=SelectedValue.bonus4}" VerticalAlignment="Top" Width="1009" FontSize="14"/>
+
+                    <TextBlock HorizontalAlignment="Left" Margin="110,49,0,0" TextWrapping="Wrap" Text="Bonus 2:" VerticalAlignment="Top" FontSize="14"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="110,69,0,0" TextWrapping="Wrap" Text="Bonus 4:" VerticalAlignment="Top" FontSize="14"/>
+
+                    <Image HorizontalAlignment="Left" Height="100" Width="100" Margin="5,5,0,0" VerticalAlignment="Top" Source="{Binding ElementName=RelicListTitles, Path=SelectedValue.image}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Planars">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="110"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <ListView Name="planarListUi" Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Width="40" Header="Tier" DisplayMemberBinding="{Binding tier}"/>
+                                <GridViewColumn Width="250" Header="Planar Set" DisplayMemberBinding="{Binding planar.name}"/>
+                                <GridViewColumn Width="Auto" Header="Value" DisplayMemberBinding="{Binding value}"/>
+                                <GridViewColumn Width="Auto" Header="Comments" DisplayMemberBinding="{Binding comment}"/>
+                                <GridViewColumn Width="600" Header="Notes" DisplayMemberBinding="{Binding notes}"/>
+                            </GridView>
+                        </ListView.View>
+
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding flag}" Value="true">
+                                        <Setter Property="Background" Value="LightGreen" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+
+                                <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+                                <Setter Property="ToolTipService.ShowDuration" Value="100000" />
+                                <Setter Property="ToolTip">
+                                    <Setter.Value>
+                                        <Grid>
+                                            <StackPanel Orientation="Vertical">
+                                                <Grid>
+                                                    <Image HorizontalAlignment="Left" Height="100" Width="100" Margin="5,5,0,0" VerticalAlignment="Top" Source="{Binding planar.image}" />
+                                                    <TextBlock HorizontalAlignment="Left" Margin="110, 5,0,0" TextWrapping="Wrap" Text="{Binding planar.name}" VerticalAlignment="Top" Width="400" FontSize="14" FontWeight="Bold"/>
+                                                    <TextBlock HorizontalAlignment="Left" Margin="110,25,0,0" TextWrapping="Wrap" Text="Bonus 2:" VerticalAlignment="Top" FontSize="14"/>
+                                                    <TextBlock HorizontalAlignment="Left" Margin="165,25,0,0" TextWrapping="Wrap" Text="{Binding planar.bonus2}" VerticalAlignment="Top" Width="400" FontSize="14"/>
+                                                </Grid>
+                                            </StackPanel>
+
+
+                                        </Grid>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+
+                        <ListView.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate>
+                                                    <Expander IsExpanded="True" Margin="5,0,0,0">
+                                                        <Expander.Header>
+                                                            <StackPanel Orientation="Vertical" Margin="10,0,0,4">
+                                                                <StackPanel Orientation="Horizontal" >
+                                                                    <TextBlock Text="{Binding Name.name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
+                                                                </StackPanel>
+                                                                <StackPanel Orientation="Horizontal" >
+                                                                    <TextBlock FontSize="15" VerticalAlignment="Bottom" Foreground="#555" FontWeight="Bold" Text="Sphere: " />
+                                                                    <TextBlock FontSize="15" VerticalAlignment="Bottom" Foreground="#555" Text="{Binding Name.sphere}" />
+                                                                    <TextBlock FontSize="15" VerticalAlignment="Bottom" Foreground="#555" Text=";" />
+                                                                    <TextBlock FontSize="15" VerticalAlignment="Bottom" Foreground="#555" FontWeight="Bold" Text=" Rope: " />
+                                                                    <TextBlock FontSize="15" VerticalAlignment="Bottom" Foreground="#555" Text="{Binding Name.rope}" />
+                                                                </StackPanel>
+                                                            </StackPanel>
+                                                        </Expander.Header>
+                                                        <ItemsPresenter />
+                                                    </Expander>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                    </ListView>
+
+                    <ComboBox Name="PlanarListTitles" HorizontalAlignment="Left" Margin="110,11,0,0" VerticalAlignment="Top" Width="459" Height="32" SelectionChanged="RefreshPlanarTable" DisplayMemberPath="name" FontSize="18" />
+                    <CheckBox Name="PlanarListMode" Content="Show alternatives" HorizontalAlignment="Left" Margin="585,21,0,0" VerticalAlignment="Top" Checked="PlanarListMode_Checked" Unchecked="PlanarListMode_Checked" />
+
+                    <TextBlock HorizontalAlignment="Left" Margin="165,50,0,0" TextWrapping="Wrap" Text="{Binding ElementName=PlanarListTitles, Path=SelectedValue.bonus2}" VerticalAlignment="Top" Width="1009" FontSize="14"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="110,50,0,0" TextWrapping="Wrap" Text="Bonus 2:" VerticalAlignment="Top" FontSize="14"/>
+
+                    <Image HorizontalAlignment="Left" Height="100" Width="100" Margin="5,5,0,0" VerticalAlignment="Top" Source="{Binding ElementName=PlanarListTitles, Path=SelectedValue.image}" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <ListBox Name="characterList" d:ItemsSource="{d:SampleData ItemCount=5}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <CheckBox Content="{Binding Value.name}" IsChecked="{Binding Value.enabled}" Checked="CheckBox_Checked" Unchecked="CheckBox_Checked"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="2" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <Grid Grid.Column="0" Grid.Row="1" Background="#FFF1EDED" >
+            <Button Content="Reload data from prydwen.gg" Click="ReloadDataButtonClick" Margin="2" ToolTip="Reload can be done once per launch" />
+            <ProgressBar Margin="2" Name="progressBar" Opacity="0.5" Maximum="100" Visibility="Hidden" />
+        </Grid>
+        <StatusBar Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom" Height="26" >
+            <StatusBarItem>
+                <TextBlock Margin="1,0, -1, 0">All build data has been taken from prydwen.gg. Please visit
+                    <Hyperlink
+                        NavigateUri="https://www.prydwen.gg/star-rail/"
+                        RequestNavigate="Hyperlink_RequestNavigate" Foreground="#FF003973">
+                        prydwen.gg
+                    </Hyperlink>
+                    for more information about Honkai: Star Rail.</TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
